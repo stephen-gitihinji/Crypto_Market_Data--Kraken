@@ -4,7 +4,6 @@ from ingestion import extract
 from ingestion.schemas import OHLCV, L2Book, GroupedBook, RecentTrades, RecentSpreads
 from ingestion import transformers 
 from ingestion.staging import stage_data
-import time
 
 tickers = extract.get_tickers()
 
@@ -36,11 +35,3 @@ def ingest():
     stage_data(valid_grouped_book, "grouped_book_data")
     stage_data(valid_recent_trades, "recent_crypto_trades")
     stage_data(valid_recent_spreads, "recent_crypto_spreads")
-
-
-
-if __name__ == "__main__":
-    start_watch = time.perf_counter()
-    ingest()
-    print("Ingestion done")
-    print(f"{time.perf_counter() - start_watch}s")
