@@ -2,12 +2,18 @@ import pandas as pd
 import asyncio
 from ingestion import extract
 from ingestion.schemas import OHLCV, L2Book, GroupedBook, RecentTrades, RecentSpreads
-from ingestion import transformers 
-from ingestion.staging import stage_data
+from ingestion import transformers
+from ingestion import models
+from ingestion.staging import stage_data, engine
+from sqlalchemy.orm import session
+
 
 tickers = extract.get_tickers()
 
 def ingest():
+    #creating the table it they do not exist
+    models.metadata.create_all(engine)
+
     #obtaining the data
     ohlcv_data = asyncio.run(extract.fetch_OHLCV_data(tickers))
     L2_book_data = asyncio.run(extract.fetch_L2_book(tickers))
@@ -29,9 +35,9 @@ def ingest():
     valid_recent_trades = [RecentTrades.model_validate(data).model_dump() for data in clean_recent_trades]
     valid_recent_spreads = [RecentSpreads.model_validate(data).model_dump() for data in clean_recent_spreads]
 
-    #staging the data
     stage_data(valid_ohlcv, "ohlcv_crypto_data")
     stage_data(valid_l2_book, "l2_book_data")
     stage_data(valid_grouped_book, "grouped_book_data")
     stage_data(valid_recent_trades, "recent_crypto_trades")
     stage_data(valid_recent_spreads, "recent_crypto_spreads")
+
