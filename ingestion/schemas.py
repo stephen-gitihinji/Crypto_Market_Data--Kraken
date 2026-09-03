@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 class OHLCV(BaseModel):
     timestamp: int
@@ -27,12 +27,19 @@ class GroupedBook(BaseModel):
 class RecentTrades(BaseModel):
     price:float
     volume:float
-    time:float
+    time:int
     side:str
     order_type:str
     misc:str
     trade_id:int
     pair:str
+
+    @field_validator('time', mode='before')
+    @classmethod
+    def truncate_float(cls, v):
+        if isinstance(v, float):
+            return int(v)  # truncates before validation happens
+        return v
 
 class RecentSpreads(BaseModel):
     time:int
