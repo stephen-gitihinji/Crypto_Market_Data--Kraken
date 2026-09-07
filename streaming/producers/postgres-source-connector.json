@@ -1,20 +1,20 @@
 {
-  "name": "your_db_name",
+  "name": "crypto-source",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "tasks.max": "1",
 
-    "connection.url": "jdbc:postgresql://your_host:your_port/your_db_name",
-    "connection.user": "your_username",
-    "connection.password": "your_password",
+    "connection.url": "jdbc:postgresql://localhost:5432/${fileProvider:./streaming/producers/confidential.properties:DB_NAME",
+    "connection.user": "${fileProvider:./streaming/producers/confidential.properties:DB_USER}",
+    "connection.password": "${fileProvider:./streaming/producers/confidential.properties:DB_PASSWORD}",
 
     "table.include.list":
     "public\\.l2_book_data,public\\.ohlcv_crypto_data,public\\.recent_crypto_spreads,public\\.recent_crypto_trades",
 
     "mode": "incrementing",
     "incrementing.column.mapping":
-    "public\\.l2_book_data.*:timestamp,public\\.ohlcv_crypto_data.*:timestamp,public\\.recent_crypto_spreads.*:time,,public\\.recent_crypto_trades.*:time",
+    "public\\.l2_book_data.*:timestamp,public\\.ohlcv_crypto_data.*:timestamp,public\\.recent_crypto_spreads.*:time,public\\.recent_crypto_trades.*:time",
 
     "topic.prefix": "postgres-"
-  }
+    }
 }
