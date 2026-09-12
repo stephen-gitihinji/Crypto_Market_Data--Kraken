@@ -35,6 +35,7 @@ def ingest():
     valid_recent_trades = [RecentTrades.model_validate(data).model_dump() for data in clean_recent_trades]
     valid_recent_spreads = [RecentSpreads.model_validate(data).model_dump() for data in clean_recent_spreads]
 
+    #staging
     stage_data(valid_ohlcv, "ohlcv_crypto_data")
     stage_data(valid_l2_book, "l2_book_data")
     stage_data(valid_grouped_book, "grouped_book_data")
