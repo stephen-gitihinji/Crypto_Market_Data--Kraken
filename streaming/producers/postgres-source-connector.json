@@ -4,7 +4,7 @@
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "tasks.max": "1",
 
-    "connection.url": "jdbc:postgresql://localhost:5432/${fileProvider:./streaming/producers/confidential.properties:DB_NAME",
+    "connection.url": "jdbc:postgresql://localhost:5432/${fileProvider:./streaming/producers/confidential.properties:DB_NAME}",
     "connection.user": "${fileProvider:./streaming/producers/confidential.properties:DB_USER}",
     "connection.password": "${fileProvider:./streaming/producers/confidential.properties:DB_PASSWORD}",
 
