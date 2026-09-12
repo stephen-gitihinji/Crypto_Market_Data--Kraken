@@ -4,7 +4,7 @@ from config import KAFKA_BROKER
 
 spark = SparkSession.builder.appName("SparkConsumer").getOrCreate()
 
-#For console output to reduce verbose
+#For console output - to reduce verbose text
 spark.sparkContext.setLogLevel("ERROR")
 
 def consume_topic(topic_name, df_schema):
