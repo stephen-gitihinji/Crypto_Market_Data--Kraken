@@ -1,5 +1,6 @@
 from pyspark.sql.window import Window
 from pyspark.sql import functions as f
+from pyspark.sql import DataFrame
 
 def ohlcv_price_transformation(ohlcv_df):
     #using the lag functions
@@ -10,16 +11,6 @@ def ohlcv_price_transformation(ohlcv_df):
                 .withColumn('intraday_return', f.try_divide((f.col('close') - f.col('open')), f.col('open')))
                 )
     return ohlcv_df
-
-# def best_bid_ask(l2_book_df):
-#     best_bid_ask_df = l2_book_df.withWatermark("timestamp", "10 minutes").groupBy(
-#          f.window(f.col("timestamp"), "1 day"),
-#          "pair"
-#     ).agg(
-#         f.max(f.when(f.col('side') == 'bid', f.col('price'))).alias('best_bid'),
-#         f.min(f.when(f.col('side') == 'ask', f.col('price'))).alias('best_ask')
-#     )
-#     return best_bid_ask_df
 
 #spread
 def spread_transformation(recent_spreads_df):
@@ -33,8 +24,7 @@ def spread_transformation(recent_spreads_df):
       ))
       return avg_spread_prices_df
 
-def price_metrics(ohlcv_df,recent_spreads_df):
+def price_metrics(ohlcv_df:DataFrame, recent_spreads_df:DataFrame)->tuple[DataFrame, DataFrame]:
     ohlcv_df = ohlcv_price_transformation(ohlcv_df)
     spread_df = spread_transformation(recent_spreads_df)
-    
     return ohlcv_df, spread_df
