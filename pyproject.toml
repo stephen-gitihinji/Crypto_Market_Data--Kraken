@@ -12,6 +12,7 @@ dependencies = [
     "pandas>=3.0.5",
     "psycopg2-binary>=2.9.12",
     "pydantic>=2.13.4",
+    "pyspark>=4.2.0",
     "requests>=2.34.2",
     "sqlalchemy>=2.0.52",
 ]
@@ -24,7 +25,7 @@ requires = ["setuptools>=80"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["ingestion", "config"]
+include = ["ingestion", "config", "streaming", "processing"]
 
 [tool.setuptools]
 py-modules = ["config"]
